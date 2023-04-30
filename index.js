@@ -1010,6 +1010,8 @@ if (nombres.includes(nombre.toLowerCase())) {
 } else {
 	alert("Hola, su nombre: " + nombre + ", no es muy común.")
 }
+
+document.write("<h2>Lo que sigue se imprime con un bucle while.</h2>")
 let i = 0
 while (i < 5) {
 	document.write("<p>Éste es el párrafo número " + i +".</p>")

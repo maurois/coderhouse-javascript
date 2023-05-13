@@ -8,3 +8,7 @@
 .card-item {
     max-width: 18rem;
 }
+
+.card-header {
+    font-weight: 700;
+}

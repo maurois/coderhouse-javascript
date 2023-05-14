@@ -12,3 +12,16 @@
 .card-header {
     font-weight: 700;
 }
+
+.card-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.no-list {
+    font-weight: 300;
+    font-size: 100px;
+}

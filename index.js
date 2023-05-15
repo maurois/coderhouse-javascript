@@ -3,7 +3,7 @@ let gastos = [
   {articulo: "bananas", precio: 500, fecha: "2023-05-12", detalle: "un kilo"},
   {articulo: "jugo", precio: 400, fecha: "2023-05-14", detalle: "1lt naranja"},
   {articulo: "empanadas", precio: 1500, fecha: "2023-05-10", detalle: "una docena"},
-  {articulo: "hockey stick", precio: 150000, fecha: "2023-05-12", detalle: "vblack wit"},
+  {articulo: "hockey stick", precio: 150000, fecha: "2023-05-12", detalle: "vlack wit"},
   {articulo: "canilleras", precio: 3500, fecha: "2023-05-12", detalle: "un par"},
   {articulo: "zapatillas", precio: 45000, fecha: "2023-05-12", detalle: "un par"},
   {articulo: "office 365", precio: 9000, fecha: "2023-05-12", detalle: "licencia familiar por un año"},

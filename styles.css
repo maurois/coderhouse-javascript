@@ -25,3 +25,10 @@
     font-weight: 300;
     font-size: 100px;
 }
+
+.filtro-por-precio {
+    display: flex;
+    /* align-content: flex-start; */
+    /* align-items: flex-start; */
+}
+

@@ -13,6 +13,16 @@ let gastos = [
 
 let aux = [...gastos]
 
+const sumarGastos = () => {
+  let total = 0
+  gastos.forEach(g => {
+    total += g.precio
+  })
+  document.getElementById("titulo").innerHTML = `Gastos = $${total}`
+}
+
+sumarGastos()
+
 const mostrarGastos = (gastos) => {
 
   const list = document.getElementById("list")
@@ -21,9 +31,13 @@ const mostrarGastos = (gastos) => {
   while (list.hasChildNodes()) {
     list.removeChild(list.firstChild)    
   }
-
+  
   if (gastos.length > 0){
+    
+    list.className = "card-list"
+
     gastos.forEach(gasto => {
+
       const item = document.createElement("div")
   
       item.className = "card border-dark m-3 card-item"
@@ -40,10 +54,10 @@ const mostrarGastos = (gastos) => {
         item.className += " bg-warning"
       }
 
-      list.className = "card-list"
       list.append(item)
+
     })
-  
+
   } else {
     const item = document.createElement("div")
     list.className = "card-empty"
@@ -69,7 +83,7 @@ const agregarGasto = () => {
   if (esValido()) {
     const gasto = {
       articulo: articulo.value,
-      precio: precio.value,
+      precio: parseInt(precio.value),
       fecha: fecha.value,
       detalle: detalle.value
     }
@@ -83,27 +97,31 @@ const agregarGasto = () => {
   
     mostrarGastos(gastos)
     aux = [...gastos]
+
+    sumarGastos()
+
   }
 
 }
 document.getElementById("botonAgregar").onclick = agregarGasto
 
 const filtrarPorPrecioMayor = (event) => {
-  const p = parseInt(document.getElementById("price").value)
+  const p = parseInt(document.getElementById("precioMayor").value)
   aux = aux.filter(g => g.precio > p)
   mostrarGastos(aux)
 }
 document.getElementById("botonFiltrarPrecioMayor").onclick = filtrarPorPrecioMayor
 
 const filtrarPorPrecioMenor = () => {
-  const p = parseInt(document.getElementById("price").value)
+  const p = parseInt(document.getElementById("precioMenor").value)
   aux = aux.filter(g => g.precio < p)
   mostrarGastos(aux)
 }
 document.getElementById("botonFiltrarPrecioMenor").onclick = filtrarPorPrecioMenor
 
 const limpiarFiltroPrecio = () => {
-  let price = document.getElementById("price").value = ""
+  let precioMayor = document.getElementById("precioMayor").value = ""
+  let precioMenor = document.getElementById("precioMenor").value = ""
   aux = [...gastos]
   mostrarGastos(gastos)
 }

@@ -15,7 +15,12 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="m-3" >Gastos</h1>
+    <!-- <h1 class="m-3" >Gastos</h1> -->
+    <div class="card my-3">
+      <div class="card-body">
+        <h1 id="titulo"></h1>
+      </div>
+    </div>
 
       <div class="card mb-3">
         <div class="row g-0">
@@ -56,9 +61,14 @@
                   <div class="accordion-body">
                     <div name="filtro-precio" class="card text-light bg-dark p-3">                      
                       <label for="price" class="form-label">Precio</label>
-                      <input type="number" class="form-control" id="price" placeholder="850" required></input>
-                      <button id="botonFiltrarPrecioMayor" type="button" class="btn-primary form-control mt-3" onclick="filtrarPorPrecioMayor">Mayor a</button>
-                      <button id="botonFiltrarPrecioMenor" type="button" class="btn-primary form-control mt-3" onclick="filtrarPorPrecioMenor">Menor a</button>
+                      <div class="filtro-por-precio">
+                        <button id="botonFiltrarPrecioMayor" type="button" class="btn-primary form-control my-3" onclick="filtrarPorPrecioMayor">Mayor a</button>
+                        <input type="number" class="form-control ms-3 my-3" id="precioMayor" placeholder="370"></input>
+                      </div>
+                      <div class="filtro-por-precio">
+                        <button id="botonFiltrarPrecioMenor" type="button" class="btn-primary form-control my-3" onclick="filtrarPorPrecioMenor">Menor a</button>
+                        <input type="number" class="form-control ms-3 my-3" id="precioMenor" placeholder="4000"></input>
+                      </div>
                       <button id="botonLimpiarFiltroPrecio" type="button" class="btn-primary form-control mt-3" onclick="limpiarFiltroPrecio">Limpiar</button>
                     </div>
                   </div>

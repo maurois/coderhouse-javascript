@@ -1,3 +1,5 @@
+//App para manejo de gastos, por el momento es global, la idea es hacer una solapa para cada mes para ir completandolas
+
 let gastos = [
   {id: 1, articulo: "galletitas", precio: 350, fecha: "2023-05-12", detalle: "traviata"},
   {id: 2, articulo: "bananas", precio: 500, fecha: "2023-05-12", detalle: "un kilo"},
@@ -10,30 +12,38 @@ let gastos = [
   {id: 9, articulo: "MacBook Air", precio: 480000, fecha: "2023-05-12", detalle: "M1 gris espacial 😱"},
   {id: 10, articulo: "Smartphone Motorola", precio: 145000, fecha: "2023-05-12", detalle: "Moto G"}
 ] //gastos puede ser un arreglo vacio inicialmente o traido desde una db.
-let key = 11
-let aux = [...gastos]
-let id_key = 0
 
+//Declaracion de variables globales
+let key = 11 //se utiliza para referenciar cada gasto, es el id que se le asigna cada vez que se agrega y debe ser unico.
+let aux = [...gastos] // aux se usa para no operar sobre el arreglo de gastos que no se debe perder, salvo que sea necesario eliminar o agregar gastos
+
+// wrapper para document.getElementById
+const element = (id) => {
+  return document.getElementById(id)
+}
+
+// Para obtener la suma de los gastos y agregarla al titulo de la pagina, luego tendra que ser usada por cada tab
 const sumarGastos = () => {
   let total = 0
   gastos.forEach(g => {
     total += g.precio
   })
-  document.getElementById("titulo").innerHTML = `<i class="bi bi-coin"></i> Gastos <i class="bi bi-currency-dollar"></i>${total}`
+  element("titulo").innerHTML = `<i class="bi bi-coin"></i> Gastos <i class="bi bi-currency-dollar"></i>${total}`
 }
 
-sumarGastos()
+sumarGastos() // se carga el titulo por primera vez
 
+//Se encarga de mostrar cada tarjeta para cada gasto que se encuentra en el arreglo arr que es pasado como argumento
 const mostrarGastos = (arr) => {
 
-  const list = document.getElementById("list")
+  const list = element("list")
   
   //Vaciamos el contenido del del div "list"
   while (list.hasChildNodes()) {
     list.removeChild(list.firstChild)    
   }
   
-  if (arr.length > 0){
+  if (arr.length > 0){  // si el arreglo de gastos tiene elementos (gastos) los mostramos
     
     list.className = "card-list"
 
@@ -46,16 +56,16 @@ const mostrarGastos = (arr) => {
                           <div class="btn-group">
                             <span class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><span>${gasto.articulo}</span></span>
                             <ul class="dropdown-menu shadow">
-                              <li><a class="dropdown-item" key=${gasto.id} data-bs-toggle="modal" data-bs-target="#modalEditor" onclick="editarGasto(this)"><i class="bi bi-pen"></i> Editar</a></li>
-                              <li><a class="dropdown-item" key=${gasto.id} onclick="eliminarGasto(this)"><i class="bi bi-trash"></i> Eliminar</a></li>
+                              <li><a class="dropdown-item" data-gasto-id=${gasto.id} onclick="editarGasto(this)" data-bs-toggle="modal" data-bs-target="#modalEditor"><i class="bi bi-pen"></i> Editar</a></li>
+                              <li><a class="dropdown-item" data-gasto-id=${gasto.id} onclick="eliminarGasto(this)"><i class="bi bi-trash"></i> Eliminar</a></li>
                             </ul>
                           </div>
                         </div>
                         <div class="card-body">
-                          <h5 class="card-title ms-2"><i class="bi bi-currency-dollar"></i><span>${gasto.precio}</span></h5>
-                          <p class="card-text ms-2"><span>${gasto.detalle}</span></p>
+                          <h5 class="card-title ms-1"><i class="bi bi-currency-dollar"></i><span>${gasto.precio}</span></h5>
+                          <p class="card-text ms-1"><span>${gasto.detalle}</span></p>
                         </div>
-                        <div class="card-footer"><span class="mx-2">${gasto.fecha}</span></div>`
+                        <div class="card-footer"><span class="mx-1">${gasto.fecha}</span></div>`
   
       if (gasto.precio >= 10000) {
         item.className +=  " border-danger" //" bg-danger text-white"
@@ -69,7 +79,7 @@ const mostrarGastos = (arr) => {
 
     })
 
-  } else {
+  } else { // sino (el arr no tiene elementos (no hay gastos que mostrar) mostramos un par de ojos)
     const item = document.createElement("div")
     list.className = "card-empty"
     item.className = "no-list"
@@ -78,14 +88,16 @@ const mostrarGastos = (arr) => {
     aux = [...gastos]
   }
 
-  sumarGastos()
+  sumarGastos() // actualiazamos el estado del titulo, puede que se haya modificado el arr pasado para mostrar
 
 }
 
-mostrarGastos(gastos)
+mostrarGastos(gastos) //Se carga la pagina por primera vez
 
+
+// para validar que el form de agregar gastos este cargado con datos
 const esValido = () => {
-  if (document.getElementById("articulo").value === "" || document.getElementById("precio").value === "" || document.getElementById("fecha").value === ""  ){
+  if (element("articulo").value === "" || element("precio").value === "" || element("fecha").value === ""  ){
     alert("Debe rellenar los campos Articulo, Precio y Fecha al menos.")
     return false
   } else {
@@ -93,24 +105,24 @@ const esValido = () => {
   }
 }
 
+// 
 const agregarGasto = () => {
 
   if (esValido()) {
     const gasto = {
       id:key,
-      articulo: articulo.value,
-      precio: parseInt(precio.value),
-      fecha: fecha.value,
-      detalle: detalle.value
+      articulo: element("articulo").value,
+      precio: parseInt(element("precio").value),
+      fecha: element("fecha").value,
+      detalle: element("detalle").value
     }
-
     key++
     gastos.push(gasto)
   
-    articulo.value = ""
-    precio.value = ""
-    fecha.value = ""
-    detalle.value = ""
+    element("articulo").value = ""
+    element("precio").value = ""
+    element("fecha").value = ""
+    element("detalle").value = ""
   
     mostrarGastos(gastos)
     aux = [...gastos]
@@ -120,29 +132,29 @@ const agregarGasto = () => {
   }
 
 }
-document.getElementById("botonAgregar").onclick = agregarGasto
+element("botonAgregar").addEventListener("click", agregarGasto)
 
 const filtrarPorPrecioMayor = (event) => {
-  const p = parseInt(document.getElementById("precioMayor").value)
+  const p = parseInt(element("precioMayor").value)
   aux = aux.filter(g => g.precio > p)
   mostrarGastos(aux)
 }
-document.getElementById("botonFiltrarPrecioMayor").onclick = filtrarPorPrecioMayor
+element("botonFiltrarPrecioMayor").addEventListener("click", filtrarPorPrecioMayor) 
 
 const filtrarPorPrecioMenor = () => {
-  const p = parseInt(document.getElementById("precioMenor").value)
+  const p = parseInt(element("precioMenor").value)
   aux = aux.filter(g => g.precio < p)
   mostrarGastos(aux)
 }
-document.getElementById("botonFiltrarPrecioMenor").onclick = filtrarPorPrecioMenor
+element("botonFiltrarPrecioMenor").addEventListener("click", filtrarPorPrecioMenor)
 
 const limpiarFiltroPrecio = () => {
-  let precioMayor = document.getElementById("precioMayor").value = ""
-  let precioMenor = document.getElementById("precioMenor").value = ""
+  let precioMayor = element("precioMayor").value = ""
+  let precioMenor = element("precioMenor").value = ""
   aux = [...gastos]
   mostrarGastos(gastos)
 }
-document.getElementById("botonLimpiarFiltroPrecio").onclick = limpiarFiltroPrecio
+element("botonLimpiarFiltroPrecio").addEventListener("click", limpiarFiltroPrecio)
 
 const precioSortAscendente = (a, b) =>  { 
   if (a.precio > b.precio) {
@@ -158,7 +170,7 @@ const sortPrecioAscendente = () => {
   aux.sort(precioSortAscendente)
   mostrarGastos(aux)
 }
-document.getElementById("botonSortPrecioAscendente").onclick = sortPrecioAscendente
+element("botonSortPrecioAscendente").addEventListener("click", sortPrecioAscendente)
 
 const precioSortDescendente = (a, b) =>  {
   if (a.precio > b.precio) {
@@ -174,15 +186,15 @@ const sortPrecioDescendente = () => {
   aux.sort(precioSortDescendente)
   mostrarGastos(aux)
 }
-document.getElementById("botonSortPrecioDescendente").onclick = sortPrecioDescendente
+element("botonSortPrecioDescendente").addEventListener("click", sortPrecioDescendente)
 
 const restaurarOrden = () => {
   aux = [...gastos]
   mostrarGastos(gastos)
 }
-document.getElementById("botonRestaurarPrecio").onclick = restaurarOrden
-document.getElementById("botonRestaurarFecha").onclick = restaurarOrden
-document.getElementById("botonRestaurarTodos").onclick = restaurarOrden
+element("botonRestaurarPrecio").addEventListener("click", restaurarOrden)
+element("botonRestaurarFecha").addEventListener("click", restaurarOrden)
+element("botonRestaurarTodos").addEventListener("click", restaurarOrden)
 
 const fechaSortAscendente = (a, b) => {
   const da = new Date(a.fecha)
@@ -200,7 +212,7 @@ const sortFechaAscendente = () => {
   aux.sort(fechaSortAscendente)
   mostrarGastos(aux)
 }
-document.getElementById("botonSortFechaAscendente").onclick = sortFechaAscendente
+element("botonSortFechaAscendente").addEventListener("click", sortFechaAscendente)
 
 const fechaSortDescendente = (a, b) => {
   const da = new Date(a.fecha)
@@ -218,16 +230,17 @@ const sortFechaDescendente = () => {
   aux.sort(fechaSortDescendente)
   mostrarGastos(aux)
 }
-document.getElementById("botonSortFechaDescendente").onclick = sortFechaDescendente
+element("botonSortFechaDescendente").addEventListener("click", sortFechaDescendente)
 
 const buscarFecha = () => {
-  aux = aux.filter(g => g.fecha === document.getElementById("fechaInput").value)
+  aux = aux.filter(g => g.fecha === element("fechaInput").value)
   mostrarGastos( aux )
 }
-document.getElementById("botonBuscarFecha").onclick = buscarFecha
+element("botonBuscarFecha").addEventListener("click", buscarFecha)
 
 const eliminarGasto = (e) => {
-  const index = gastos.indexOf(gastos.filter(g => g.id === parseInt(e.getAttribute("key")))[0])
+
+  const index = gastos.indexOf(gastos.filter(g => g.id === parseInt(e.dataset["gastoId"]  ))[0])
   gastos.splice(index, 1)
   mostrarGastos(gastos)
   aux = [...gastos]
@@ -235,7 +248,7 @@ const eliminarGasto = (e) => {
 
 
 const cargarModal = () => {
-  const editor = document.getElementById("modalEditorForm")
+  const editor = element("modalEditorForm")
 
   editor.innerHTML = `<div class="modal fade" id="modalEditor" tabindex="-1" aria-labelledby="modalEditorLabel" aria-hidden="true">
                       <div class="modal-dialog">
@@ -244,13 +257,11 @@ const cargarModal = () => {
                             <h1 class="modal-title fs-5" id="modalEditorLabel"><span id="articuloMod"></span></h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
-                          <div id="modal-form" class="modal-body">
-                            
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" onclick="aplicarCambios()" data-bs-dismiss="modal">Aplicar</button>
-                          </div>
+                          <div id="modal-form" class="modal-body"></div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                          <button type="button" class="btn btn-primary" onclick="aplicarCambios()" data-bs-dismiss="modal">Aplicar</button>
+                        </div>
                         </div>
                       </div>
                     </div>`
@@ -259,10 +270,10 @@ const cargarModal = () => {
 
 const editarGasto = (e) => {
 
-  const gasto = gastos.filter(g => g.id === parseInt(e.getAttribute("key")))[0]
+  const gasto = gastos.filter(g => g.id === parseInt(e.dataset["gastoId"]))[0]
 
-  const form = document.getElementById("modal-form")
-  form.innerHTML = `<div name="formularioMod" id="card-form-mod">
+  const form = element("modal-form")
+  form.innerHTML = `<div name="formularioMod" id="card-form-mod" data-gasto-id=${gasto.id}>
                       <label for="articulo" class="form-label ">Artículo</label>
                       <input type="text" class="form-control" id="articulo-mod" onkeyup="actualizarTituloMod()" value="${gasto.articulo}" required>
                       <label for="precio" class="form-label mt-3">Precio</label>
@@ -271,26 +282,25 @@ const editarGasto = (e) => {
                       <textarea class="form-control" id="detalle-mod" rows="3" >${gasto.detalle}</textarea>
                       <label for="fecha" class="form-label mt-3">Fecha</label>
                       <input type="date" class="form-control" id="fecha-mod" value=${gasto.fecha} required></input>
-                      <span key=${gasto.id} id="span-key"></span>
                     </div>`
 
-  document.getElementById("articuloMod").innerText = gasto.articulo
+  element("articuloMod").innerText = gasto.articulo
 }
 
 const actualizarTituloMod = () => {
 
-  const tituloMod = document.getElementById("articuloMod")
-  tituloMod.innerText = document.getElementById("articulo-mod").value
+  const tituloMod = element("articuloMod")
+  tituloMod.innerText = element("articulo-mod").value
 
 }
 
 const aplicarCambios = () => {
 
-  const gasto = gastos.filter(g => g.id === parseInt(document.getElementById("span-key").getAttribute("key")) )[0]
-  gasto.articulo = document.getElementById("articulo-mod").value
-  gasto.precio = parseInt(document.getElementById("precio-mod").value)
-  gasto.detalle = document.getElementById("detalle-mod").value
-  gasto.fecha = document.getElementById("fecha-mod").value
+  const gasto = gastos.filter(g => g.id === parseInt(element("card-form-mod").dataset["gastoId"]) )[0]
+  gasto.articulo = element("articulo-mod").value
+  gasto.precio = parseInt(element("precio-mod").value)
+  gasto.detalle = element("detalle-mod").value
+  gasto.fecha = element("fecha-mod").value
 
   mostrarGastos(gastos)
   aux = [...gastos]

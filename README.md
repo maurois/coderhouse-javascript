@@ -1,9 +1,16 @@
-# Segunda Preentrega de Proyecto Final - CoderHouse JavaScript
+# Tercer Preentrega de Proyecto Final - CoderHouse JavaScript
 ## coderhouse-javascript
 ### Aplicación para registro de gastos
-El objetivo es registrar gastos realizados en un mes y poder visualizarlos todos en forma de tarjetas. Estos contendrán un titulo (el articulo), monto (precio), fecha y descripción.
+El objetivo es registrar gastos realizados en un mes y poder visualizarlos en forma de tarjetas. Estos contendrán un titulo (el articulo), monto (precio), fecha y descripción. Una proxima mejora puede ser agregar un tab por cada mes
 
-Por el momento se puede agregar gastos, filtrarlos por monto (precio), ordenarlos por precio y por fecha.
+En el título se puede ver la suma de los gastos.
 
-Proximamente se agregará busqueda por articulo y por descripción.
-Falta también una tarjeta que indique el monto total gastado.
+Un arreglo de gastos es leido desde el almacenamiento local y es mostrado en pantalla. 
+
+Además de visualizarlos, se puede agregar gastos, editarlos y eliminarlos de a uno en particular.
+
+También es posible filtrarlos por precio, ordenarlos por precio y por fecha y además buscarlos por fecha.
+
+Aún falta agregar busqueda por articulo y en descripción.
+
+Finalmente es posible guardar en el almacenamiento las modificaciones que se hicieron. Para que la aplicación recuerde los que se eliminaron, agregaron o editaron.

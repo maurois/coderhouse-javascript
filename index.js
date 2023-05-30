@@ -13,6 +13,10 @@ let gastos = [
   {id: 10, articulo: "Smartphone Motorola", precio: 145000, fecha: "2023-05-12", detalle: "Moto G"}
 ] //gastos puede ser un arreglo vacio inicialmente o traido desde una db.
 
+if (localStorage.getItem("gastos") !== null) {
+  gastos = JSON.parse(localStorage.getItem("gastos"))
+}
+
 //Declaracion de variables globales
 let key = 11 //se utiliza para referenciar cada gasto, es el id que se le asigna cada vez que se agrega y debe ser unico.
 let aux = [...gastos] // aux se usa para no operar sobre el arreglo de gastos que no se debe perder, salvo que sea necesario eliminar o agregar gastos
@@ -49,31 +53,30 @@ const mostrarGastos = (arr) => {
 
     arr.forEach(gasto => {
 
+      // Uso de desestructuracion
+      const {id, articulo, precio, fecha, detalle} = gasto
+
       const item = document.createElement("div")
   
       item.className = "card border border-2 m-3 card-item shadow"
       item.innerHTML = `<div class="card-header">
                           <div class="btn-group">
-                            <span class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><span>${gasto.articulo}</span></span>
+                            <span class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><span>${articulo}</span></span>
                             <ul class="dropdown-menu shadow">
-                              <li><a class="dropdown-item" data-gasto-id=${gasto.id} onclick="editarGasto(this)" data-bs-toggle="modal" data-bs-target="#modalEditor"><i class="bi bi-pen"></i> Editar</a></li>
-                              <li><a class="dropdown-item" data-gasto-id=${gasto.id} onclick="eliminarGasto(this)"><i class="bi bi-trash"></i> Eliminar</a></li>
+                              <li><a class="dropdown-item" data-gasto-id=${id} onclick="editarGasto(this)" data-bs-toggle="modal" data-bs-target="#modalEditor"><i class="bi bi-pen"></i> Editar</a></li>
+                              <li><a class="dropdown-item" data-gasto-id=${id} onclick="eliminarGasto(this)"><i class="bi bi-trash"></i> Eliminar</a></li>
                             </ul>
                           </div>
                         </div>
                         <div class="card-body">
-                          <h5 class="card-title ms-1"><i class="bi bi-currency-dollar"></i><span>${gasto.precio}</span></h5>
-                          <p class="card-text ms-1"><span>${gasto.detalle}</span></p>
+                          <h5 class="card-title ms-1"><i class="bi bi-currency-dollar"></i><span>${precio}</span></h5>
+                          <p class="card-text ms-1"><span>${detalle}</span></p>
                         </div>
-                        <div class="card-footer"><span class="mx-1">${gasto.fecha}</span></div>`
+                        <div class="card-footer"><span class="mx-1">${fecha}</span></div>`
   
-      if (gasto.precio >= 10000) {
-        item.className +=  " border-danger" //" bg-danger text-white"
-      } else if (gasto.precio >= 5000) {
-        item.className += " border-warning"
-      } else {
-        item.className += " border-success"
-      }
+      
+      // Uso del operador ternario
+      item.className += (gasto.precio >= 10000) ?  " border-danger" : ((gasto.precio >= 5000) ? " border-warning" : " border-success") 
 
       list.append(item)
 
@@ -248,9 +251,9 @@ const eliminarGasto = (e) => {
 
 
 const cargarModal = () => {
-  const editor = element("modalEditorForm")
+  let div = element("modalEditorForm")
 
-  editor.innerHTML = `<div class="modal fade" id="modalEditor" tabindex="-1" aria-labelledby="modalEditorLabel" aria-hidden="true">
+  div.innerHTML = `<div class="modal fade" id="modalEditor" tabindex="-1" aria-labelledby="modalEditorLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -262,6 +265,20 @@ const cargarModal = () => {
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                           <button type="button" class="btn btn-primary" onclick="aplicarCambios()" data-bs-dismiss="modal">Aplicar</button>
                         </div>
+                        </div>
+                      </div>
+                    </div>`
+
+  div = element("modalGuardarCambios")
+
+  div.innerHTML = `<div class="toast-container position-fixed top-0 end-0 p-3">
+                      <div id="toastGuardar" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                          <strong class="me-auto">App Gastos</strong>
+                          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                          Gastos guardados!!
                         </div>
                       </div>
                     </div>`
@@ -305,3 +322,10 @@ const aplicarCambios = () => {
   mostrarGastos(gastos)
   aux = [...gastos]
 }
+
+const guardarCambios = () => {
+  localStorage.setItem("gastos", JSON.stringify(gastos))
+  const toastGuardar = element('toastGuardar')
+  bootstrap.Toast.getOrCreateInstance(toastGuardar).show()
+}
+element("botonGuardar").addEventListener("click", guardarCambios)

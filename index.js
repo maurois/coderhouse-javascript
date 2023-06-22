@@ -1,17 +1,30 @@
 //App para manejo de gastos, por el momento es global, la idea es hacer una solapa para cada mes para ir completandolas
 
-let gastos = [
-  {id: 1, articulo: "galletitas", precio: 350, fecha: "2023-05-12", detalle: "traviata"},
-  {id: 2, articulo: "bananas", precio: 500, fecha: "2023-05-12", detalle: "un kilo"},
-  {id: 3, articulo: "jugo", precio: 400, fecha: "2023-05-14", detalle: "1lt naranja"},
-  {id: 4, articulo: "empanadas", precio: 1500, fecha: "2023-05-10", detalle: "una docena"},
-  {id: 5, articulo: "hockey stick", precio: 150000, fecha: "2023-05-12", detalle: "vlack wit"},
-  {id: 6, articulo: "canilleras", precio: 3500, fecha: "2023-05-12", detalle: "un par"},
-  {id: 7, articulo: "zapatillas", precio: 45000, fecha: "2023-05-12", detalle: "un par"},
-  {id: 8, articulo: "office 365", precio: 9000, fecha: "2023-05-12", detalle: "licencia familiar por un año"},
-  {id: 9, articulo: "MacBook Air", precio: 480000, fecha: "2023-05-12", detalle: "M1 gris espacial 😱"},
-  {id: 10, articulo: "Smartphone Motorola", precio: 145000, fecha: "2023-05-12", detalle: "Moto G"}
-] //gastos puede ser un arreglo vacio inicialmente o traido desde una db.
+// let gastos = [
+//   {id: 1, articulo: "galletitas", precio: 350, fecha: "2023-05-12", detalle: "traviata"},
+//   {id: 2, articulo: "bananas", precio: 500, fecha: "2023-05-12", detalle: "un kilo"},
+//   {id: 3, articulo: "jugo", precio: 400, fecha: "2023-05-14", detalle: "1lt naranja"},
+//   {id: 4, articulo: "empanadas", precio: 1500, fecha: "2023-05-10", detalle: "una docena"},
+//   {id: 5, articulo: "hockey stick", precio: 150000, fecha: "2023-05-12", detalle: "vlack wit"},
+//   {id: 6, articulo: "canilleras", precio: 3500, fecha: "2023-05-12", detalle: "un par"},
+//   {id: 7, articulo: "zapatillas", precio: 45000, fecha: "2023-05-12", detalle: "un par"},
+//   {id: 8, articulo: "office 365", precio: 9000, fecha: "2023-05-12", detalle: "licencia familiar por un año"},
+//   {id: 9, articulo: "MacBook Air", precio: 480000, fecha: "2023-05-12", detalle: "M1 gris espacial 😱"},
+//   {id: 10, articulo: "Smartphone Motorola", precio: 145000, fecha: "2023-05-12", detalle: "Moto G"}
+//] //gastos puede ser un arreglo vacio inicialmente o traido desde una db.
+
+let gastos = []
+
+fetch("data.json", {"method": "GET", "Content-type": "application/json", "mode": "no-cors"})
+  .then(res => res.json())
+  .then(data => {
+                  console.log(data)
+                  mostrarGastos(data)
+                  inicializarGastos(data)
+                  gastos = [...data]
+                  cargarModal()
+  })
+  .catch(err => console.log(err))
 
 if (localStorage.getItem("gastos") !== null) {
   gastos = JSON.parse(localStorage.getItem("gastos"))
@@ -19,7 +32,7 @@ if (localStorage.getItem("gastos") !== null) {
 
 //Declaracion de variables globales
 let key = 11 //se utiliza para referenciar cada gasto, es el id que se le asigna cada vez que se agrega y debe ser unico.
-let aux = [...gastos] // aux se usa para no operar sobre el arreglo de gastos que no se debe perder, salvo que sea necesario eliminar o agregar gastos
+//let aux = [...gastos] // aux se usa para no operar sobre el arreglo de gastos que no se debe perder, salvo que sea necesario eliminar o agregar gastos
 
 // wrapper para document.getElementById
 const element = (id) => {
@@ -35,7 +48,15 @@ const sumarGastos = () => {
   element("titulo").innerHTML = `<i class="bi bi-coin"></i> Gastos <i class="bi bi-currency-dollar"></i>${total}`
 }
 
-sumarGastos() // se carga el titulo por primera vez
+const inicializarGastos = (d) => {
+  let total = 0
+  d.forEach(g => {
+    total += g.precio
+  })
+  element("titulo").innerHTML = `<i class="bi bi-coin"></i> Gastos <i class="bi bi-currency-dollar"></i>${total}`
+}
+
+// sumarGastos() // se carga el titulo por primera vez
 
 //Se encarga de mostrar cada tarjeta para cada gasto que se encuentra en el arreglo arr que es pasado como argumento
 const mostrarGastos = (arr) => {
@@ -95,7 +116,7 @@ const mostrarGastos = (arr) => {
 
 }
 
-mostrarGastos(gastos) //Se carga la pagina por primera vez
+//mostrarGastos(gastos) //Se carga la pagina por primera vez
 
 
 // para validar que el form de agregar gastos este cargado con datos

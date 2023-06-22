@@ -1,0 +1,12 @@
+[
+  {"id": 1, "articulo": "galletitas", "precio": 350, "fecha": "2023-05-12", "detalle": "traviata"},
+  {"id": 2, "articulo": "bananas", "precio": 500, "fecha": "2023-05-12", "detalle": "un kilo"},
+  {"id": 3, "articulo": "jugo", "precio": 400, "fecha": "2023-05-14", "detalle": "1lt naranja"},
+  {"id": 4, "articulo": "empanadas", "precio": 1500, "fecha": "2023-05-10", "detalle": "una docena"},
+  {"id": 5, "articulo": "hockey stick", "precio": 150000, "fecha": "2023-05-12", "detalle": "vlack wit"},
+  {"id": 6, "articulo": "canilleras", "precio": 3500, "fecha": "2023-05-12", "detalle": "un par"},
+  {"id": 7, "articulo": "zapatillas", "precio": 45000, "fecha": "2023-05-12", "detalle": "un par"},
+  {"id": 8, "articulo": "office 365", "precio": 9000, "fecha": "2023-05-12", "detalle": "licencia familiar por un año"},
+  {"id": 9, "articulo": "MacBook Air", "precio": 480000, "fecha": "2023-05-12", "detalle": "M1 gris espacial 😱"},
+  {"id": 10, "articulo": "Smartphone Motorola", "precio": 145000, "fecha": "2023-05-12", "detalle": "Moto G"}
+]

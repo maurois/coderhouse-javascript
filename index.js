@@ -18,7 +18,6 @@ let gastos = []
 fetch("data.json", {"method": "GET", "Content-type": "application/json", "mode": "no-cors"})
   .then(res => res.json())
   .then(data => {
-                  console.log(data)
                   mostrarGastos(data)
                   inicializarGastos(data)
                   gastos = [...data]
